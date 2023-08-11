@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 router.use(express.json())
+const bcrypt = require('bcrypt')
 const Student = require('../models/student')
 
 router.get("/yo", (req, res) => {
@@ -8,12 +9,15 @@ router.get("/yo", (req, res) => {
 })
 
 router.post('/addStudent', async (req, res) => {
-    const { rollId, name } = req.body;
+    const { rollId, name, password } = req.body;
   
     try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
       const student = new Student({
         rollId,
         name,
+        password: hashedPassword, 
       });
   
       await student.save();
