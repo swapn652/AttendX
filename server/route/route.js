@@ -78,6 +78,34 @@ router.post('/markAttendance', async (req, res) => {
 });
   
 
-    
+router.get('/getAttendance/:rollId', async (req, res) => {
+  const { rollId } = req.params;
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  try {
+    const student = await Student.findOne({ rollId });
+  
+    if (!student) {
+      return res.status(404).json({ error: 'Student not found' });
+    }
+  
+    const attendanceData = [];
+    student.attendance.forEach((value, key) => {
+      const date = new Date(key);
+      const formattedDate = `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+      const formattedStatus = value === 'P' ? 'Present' : 'Absent';
+      attendanceData.push({ date: formattedDate, status: formattedStatus });
+    });
+  
+    res.json({ attendance: attendanceData });
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching attendance' });
+  }
+});
+
+
 
 module.exports = router
