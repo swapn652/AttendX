@@ -142,10 +142,13 @@ router.post('/login', async (req, res) => {
 
 router.post('/uploadImage', async (req, res) => {
   try {
-    const { imageBase64 } = req.body;
+    const { imageBase64, name } = req.body;
 
+    // Create a folder in Cloudinary with the student's name
+    const folderName = `uploads/${name}`;
+    
     const uploadResponse = await cloudinary.uploader.upload(imageBase64, {
-      folder: 'uploads', // Optional folder in Cloudinary
+      folder: folderName,
     });
 
     res.status(200).json({ imageUrl: uploadResponse.secure_url });
@@ -154,5 +157,6 @@ router.post('/uploadImage', async (req, res) => {
     res.status(500).json({ error: 'Error uploading image' });
   }
 });
+
 
 module.exports = router
