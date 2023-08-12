@@ -101,7 +101,7 @@ function Webcam() {
   return (
     <div style={{ position: 'relative' }}>
   <video ref={videoRef} width="600" height="450" autoPlay />
-  <canvas
+  <canvas 
     ref={canvasRef}
     width="600"
     height="450"
