@@ -8,6 +8,7 @@ import { MainSection } from './components/MainSection'
 import { FeaturesSection } from './components/FeaturesSection'
 import { TechStackSection } from './components/TechStackSection'
 import { Footer } from './components/Footer'
+import { Register } from './components/Register'
 
 function App() {
 
@@ -15,10 +16,12 @@ function App() {
     <>
       {/* // <Webcam/> */}
       <Navbar/>
-      <MainSection/>
+      {/* <MainSection/>
       <FeaturesSection/>
       <TechStackSection/>
-      <Footer/>
+      <Footer/> */}
+
+      <Register/>
     </>
   )
 }
