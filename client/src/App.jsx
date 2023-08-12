@@ -4,13 +4,16 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Webcam from './components/Webcam'
 import { Navbar } from './components/Navbar'
+import { MainSection } from './components/MainSection'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    // <Webcam/>
-    <Navbar/>
+    <>
+      {/* // <Webcam/> */}
+      <Navbar/>
+      <MainSection/>
+    </>
   )
 }
 
