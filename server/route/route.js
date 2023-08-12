@@ -111,6 +111,27 @@ router.get('/getAttendance/:rollId', async (req, res) => {
   }
 });
 
+router.post('/login', async (req, res) => {
+  const { rollId, password } = req.body;
+
+  try {
+    const student = await Student.findOne({ rollId });
+
+    if (!student) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, student.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    res.json({ message: 'Login successful', studentName: student.name, studentRollId: student.rollId });
+  } catch (error) {
+    res.status(500).json({ error: 'Error logging in' });
+  }
+});
 
 
 module.exports = router
