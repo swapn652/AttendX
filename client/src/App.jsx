@@ -7,6 +7,7 @@ import { Navbar } from './components/Navbar'
 import { MainSection } from './components/MainSection'
 import { FeaturesSection } from './components/FeaturesSection'
 import { TechStackSection } from './components/TechStackSection'
+import { Footer } from './components/Footer'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
       <MainSection/>
       <FeaturesSection/>
       <TechStackSection/>
+      <Footer/>
     </>
   )
 }
