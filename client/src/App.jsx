@@ -5,6 +5,7 @@ import './App.css'
 import Webcam from './components/Webcam'
 import { Navbar } from './components/Navbar'
 import { MainSection } from './components/MainSection'
+import { FeaturesSection } from './components/FeaturesSection'
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
       {/* // <Webcam/> */}
       <Navbar/>
       <MainSection/>
+      <FeaturesSection/>
     </>
   )
 }
