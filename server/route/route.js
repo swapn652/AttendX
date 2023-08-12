@@ -9,23 +9,28 @@ router.get("/yo", (req, res) => {
 })
 
 router.post('/addStudent', async (req, res) => {
-    const { rollId, name, password } = req.body;
-  
-    try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
-      const student = new Student({
-        rollId,
-        name,
-        password: hashedPassword, 
-      });
-  
-      await student.save();
-      res.status(201).json({ message: 'Student added successfully' });
-    } catch (error) {
-      res.status(500).json({ error: 'Error adding student' });
-    }
+  try {
+    const { name, password } = req.body;
+
+    const existingStudentsCount = await Student.countDocuments();
+    const rollId = `AttendX_${existingStudentsCount + 1}`;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const student = new Student({
+      rollId,
+      name,
+      password: hashedPassword,
+    });
+
+    await student.save();
+    res.status(201).json({ message: 'Student added successfully', rollId });
+  } catch (error) {
+    console.error(error); 
+    res.status(500).json({ error: 'Error adding student' });
+  }
 });
+
 
 
 router.post('/markAttendance', async (req, res) => {
