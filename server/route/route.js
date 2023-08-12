@@ -3,10 +3,17 @@ const router = express.Router()
 router.use(express.json())
 const bcrypt = require('bcrypt')
 const Student = require('../models/student')
+const cloudinary = require('cloudinary').v2; 
 
 router.get("/yo", (req, res) => {
     res.send("Hehe boi")
 })
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 router.post('/addStudent', async (req, res) => {
   try {
@@ -133,5 +140,19 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.post('/uploadImage', async (req, res) => {
+  try {
+    const { imageBase64 } = req.body;
+
+    const uploadResponse = await cloudinary.uploader.upload(imageBase64, {
+      folder: 'uploads', // Optional folder in Cloudinary
+    });
+
+    res.status(200).json({ imageUrl: uploadResponse.secure_url });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error uploading image' });
+  }
+});
 
 module.exports = router
