@@ -6,6 +6,7 @@ import Webcam from './components/Webcam'
 import { Navbar } from './components/Navbar'
 import { MainSection } from './components/MainSection'
 import { FeaturesSection } from './components/FeaturesSection'
+import { TechStackSection } from './components/TechStackSection'
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
       <Navbar/>
       <MainSection/>
       <FeaturesSection/>
+      <TechStackSection/>
     </>
   )
 }
