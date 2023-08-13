@@ -161,4 +161,22 @@ router.post('/uploadImage', async (req, res) => {
 });
 
 
+router.get('/getCloudinaryImages/:label/:count', async (req, res) => {
+  const { label, count } = req.params;
+  const images = [];
+
+  try {
+    for (let i = 1; i <= count; i++) {
+      // Fetch image from Cloudinary using the public ID and folder structure
+      const imgUrl = cloudinary.url(`uploads/${label}/${i}.png`);
+      images.push(imgUrl);
+    }
+
+    res.json({ images });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error fetching images from Cloudinary' });
+  }
+});
+
 module.exports = router
