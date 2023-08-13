@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Bugfender } from '@bugfender/sdk';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 export const Register = () => {
   const [name, setName] = useState('');
@@ -48,6 +50,8 @@ export const Register = () => {
         password
       });
 
+      toast.success(`Student registered successfully. Roll ID: ${response.data.rollId}`);
+
       console.log(response.data);
       Bugfender.log(response.data);
     } catch (error) {
@@ -57,6 +61,7 @@ export const Register = () => {
   };
 
   return (
+    <>
     <div className='flex justify-center mt-20'>
       <div className='flex flex-col h-[500px] w-[500px] bg-blue-900 border-2 border-black rounded-lg p-4'>
         <div className='flex flex-col mt-2 self-center'>
@@ -97,5 +102,11 @@ export const Register = () => {
         </button>
       </div>
     </div>
+    <div className='w-[400px] mt-4 text-center mx-auto'>
+      <p className='text-2xl'>
+        Please remember your roll number that will pop up after you register successfully.
+      </p>
+    </div>
+  </>
   );
 };
