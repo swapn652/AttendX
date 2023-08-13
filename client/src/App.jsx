@@ -29,12 +29,13 @@ function App() {
       {/* <Register/> */}
       {/* <Login/> */}
 
-      <Navbar isLoggedIn={isLoggedIn} studentName={studentName} />
+      {/* <Navbar isLoggedIn={isLoggedIn} studentName={studentName} />
       {isLoggedIn ? (
         <AttendancePage studentRollId={studentRollId} />
       ) : (
         <Login setStudentName={setStudentName} setIsLoggedIn={setIsLoggedIn} setStudentRollId={setStudentRollId} />
-      )}
+      )} */}
+      <Webcam/>
     </>
   );
 }

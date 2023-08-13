@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as faceapi from 'face-api.js';
+import axios from 'axios'
 
 function Webcam() {
   const videoRef = useRef();
@@ -76,26 +77,41 @@ function Webcam() {
   }, []);
 
   async function getLabeledFaceDescriptions() {
-    const labels = ['Swapnil', 'Siddharth'];
+    const labels = ['Swapnil', 'Akshay'];
     const descriptions = [];
-
+  
     await Promise.all(
       labels.map(async (label) => {
-        for (let i = 1; i <= 2; i++) {
-          const img = await faceapi.fetchImage(`./public/labels/${label}/${i}.png`);
-          const detections = await faceapi
-            .detectSingleFace(img)
-            .withFaceLandmarks()
-            .withFaceDescriptor();
-          descriptions.push(detections.descriptor);
+        try {
+          const response = await axios.get(`/api/getCloudinaryImages/${label}/2`); // Fetch 2 images for each label
+          const imageUrls = response.data.images;
+  
+          for (const imgUrl of imageUrls) {
+            const img = await faceapi.fetchImage(imgUrl);
+            const detections = await faceapi
+              .detectSingleFace(img)
+              .withFaceLandmarks()
+              .withFaceDescriptor();
+            descriptions.push(detections.descriptor);
+          }
+        } catch (error) {
+          console.error(error);
         }
       })
     );
-
-    return Promise.all([
-      new faceapi.LabeledFaceDescriptors(labels[0], descriptions.slice(0, 2)),
-      new faceapi.LabeledFaceDescriptors(labels[1], descriptions.slice(2)),
-    ]);
+  
+    // Create labeled face descriptors
+    const labeledFaceDescriptors = [];
+    let currentIndex = 0;
+  
+    labels.forEach((label) => {
+      const numImages = 2; // Number of images for each label
+      const descriptors = descriptions.slice(currentIndex, currentIndex + numImages);
+      currentIndex += numImages;
+      labeledFaceDescriptors.push(new faceapi.LabeledFaceDescriptors(label, descriptors));
+    });
+  
+    return labeledFaceDescriptors;
   }
 
   return (
