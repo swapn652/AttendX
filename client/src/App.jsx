@@ -9,6 +9,7 @@ import { FeaturesSection } from './components/FeaturesSection'
 import { TechStackSection } from './components/TechStackSection'
 import { Footer } from './components/Footer'
 import { Register } from './components/Register'
+import { Login } from './components/Login'
 
 function App() {
 
@@ -21,7 +22,8 @@ function App() {
       <TechStackSection/>
       <Footer/> */}
 
-      <Register/>
+      {/* <Register/> */}
+      <Login/>
     </>
   )
 }
