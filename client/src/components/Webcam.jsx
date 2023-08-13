@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as faceapi from 'face-api.js';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Webcam() {
   const videoRef = useRef();
@@ -38,7 +40,14 @@ function Webcam() {
       const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors);
 
       video.addEventListener('play', async () => {
+        let lastAttendanceMarkedTime = 0;
+
         setInterval(async () => {
+          const currentTime = new Date().getTime();
+          if (currentTime - lastAttendanceMarkedTime < 3000) {
+            return;
+          }
+
           const detections = await faceapi
             .detectAllFaces(video)
             .withFaceLandmarks()
@@ -51,7 +60,7 @@ function Webcam() {
 
           canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
 
-          resizedDetections.forEach((detection) => {
+          resizedDetections.forEach(async (detection) => {
             const result = faceMatcher.findBestMatch(detection.descriptor);
             const box = detection.detection.box;
 
@@ -67,6 +76,23 @@ function Webcam() {
               }
             );
             drawBox.draw(canvas);
+
+            if (result.label !== 'unknown') {
+              try {
+                const response = await axios.post('http://localhost:8000/markAttendance', {
+                  name: result.label,
+                });
+
+                lastAttendanceMarkedTime = new Date().getTime();
+                
+                setTimeout(() => {
+                  toast.success(response.data.message, { autoClose: 3000 });
+                }, 100);
+
+              } catch (error) {
+                console.error('Failed to mark attendance:', error);
+              }
+            }
           });
         }, 100);
       });
@@ -78,7 +104,6 @@ function Webcam() {
     try {
       const response = await axios.get('http://localhost:8000/getAllStudentNames');
       const studentNames = response.data.studentNames;
-      console.log(studentNames);
       return studentNames;
     } catch (error) {
       console.error(error);
@@ -93,7 +118,7 @@ function Webcam() {
     await Promise.all(
       fetchedLabels.map(async (label) => {
         try {
-          const response = await axios.get(`http://localhost:8000/getCloudinaryImages/${label}/2`); // Fetch 2 images for each label
+          const response = await axios.get(`http://localhost:8000/getCloudinaryImages/${label}/2`);
           const imageUrls = response.data.images;
 
           for (const imgUrl of imageUrls) {
@@ -103,7 +128,6 @@ function Webcam() {
               .withFaceLandmarks()
               .withFaceDescriptor();
             descriptions.push(detections.descriptor);
-            console.log(imgUrl)
           }
         } catch (error) {
           console.error(error);
@@ -111,12 +135,11 @@ function Webcam() {
       })
     );
 
-    // Create labeled face descriptors
     const labeledFaceDescriptors = [];
     let currentIndex = 0;
 
     fetchedLabels.forEach((label) => {
-      const numImages = 2; // Number of images for each label
+      const numImages = 2;
       const descriptors = descriptions.slice(
         currentIndex,
         currentIndex + numImages
@@ -127,7 +150,7 @@ function Webcam() {
       );
     });
 
-    setLabels(fetchedLabels); // Update state with student names
+    setLabels(fetchedLabels);
 
     return labeledFaceDescriptors;
   }
