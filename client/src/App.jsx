@@ -12,18 +12,27 @@ import { Register } from './components/Register'
 import { Login } from './components/Login'
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [studentName, setStudentName] = useState('');
 
   return (
     <>
       {/* // <Webcam/> */}
-      <Navbar/>
+      {/* <Navbar/> */}
       {/* <MainSection/>
       <FeaturesSection/>
       <TechStackSection/>
       <Footer/> */}
 
       {/* <Register/> */}
-      <Login/>
+      {/* <Login/> */}
+
+      <Navbar isLoggedIn={isLoggedIn} studentName={studentName} />
+      {isLoggedIn ? (
+        <p>Placeholder content after login</p>
+      ) : (
+        <Login setStudentName={setStudentName} setIsLoggedIn={setIsLoggedIn} />
+      )}
     </>
   )
 }

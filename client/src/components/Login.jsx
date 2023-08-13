@@ -3,28 +3,30 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const Login = () => {
-  const [rollId, setRollId] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleLogin = async () => {
-    try {
-      const response = await axios.post('http://localhost:8000/login', {
-        rollId,
-        password
-      });
-
-      const { message, studentName, studentRollId } = response.data;
-      toast.success(message);
-
-      // You can use studentName and studentRollId as needed, e.g. store them in state or context
-
-    } catch (error) {
-      console.error(error);
-      toast.error('Login failed. Please check your credentials.');
-    }
-  };
-
+export const Login = ({ setStudentName, setIsLoggedIn }) => {
+    const [rollId, setRollId] = useState('');
+    const [password, setPassword] = useState('');
+  
+    const handleLogin = async () => {
+      try {
+        const response = await axios.post('http://localhost:8000/login', {
+          rollId,
+          password,
+        });
+  
+        const { message, studentName, studentRollId } = response.data;
+        toast.success(message);
+  
+        setStudentName(studentName); // Set the student's name
+        setIsLoggedIn(true); // Set login state
+  
+      } catch (error) {
+        console.error(error);
+        toast.error('Login failed. Please check your credentials.');
+      }
+    };
+  
   return (
     <div className='flex justify-center mt-20'>
       <div className='flex flex-col h-[300px] w-[400px] bg-blue-900 border-2 border-black rounded-lg p-4'>
