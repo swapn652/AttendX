@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as faceapi from 'face-api.js';
-import axios from 'axios'
+import axios from 'axios';
 
 function Webcam() {
   const videoRef = useRef();
   const canvasRef = useRef();
+  const [labels, setLabels] = useState([]);
 
   useEffect(() => {
     async function startWebcam() {
@@ -23,7 +24,6 @@ function Webcam() {
 
       video.srcObject = stream;
     }
-
     startWebcam();
   }, []);
 
@@ -54,7 +54,7 @@ function Webcam() {
           resizedDetections.forEach((detection) => {
             const result = faceMatcher.findBestMatch(detection.descriptor);
             const box = detection.detection.box;
-          
+
             const drawBox = new faceapi.draw.DrawBox(
               {
                 x: box.x,
@@ -68,24 +68,34 @@ function Webcam() {
             );
             drawBox.draw(canvas);
           });
-          
         }, 100);
       });
     }
-
     recognizeFaces();
   }, []);
 
+  async function fetchStudentNames() {
+    try {
+      const response = await axios.get('http://localhost:8000/getAllStudentNames');
+      const studentNames = response.data.studentNames;
+      console.log(studentNames);
+      return studentNames;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
   async function getLabeledFaceDescriptions() {
-    const labels = ['Swapnil', 'Akshay'];
+    const fetchedLabels = await fetchStudentNames();
+
     const descriptions = [];
-  
     await Promise.all(
-      labels.map(async (label) => {
+      fetchedLabels.map(async (label) => {
         try {
-          const response = await axios.get(`/api/getCloudinaryImages/${label}/2`); // Fetch 2 images for each label
+          const response = await axios.get(`http://localhost:8000/getCloudinaryImages/${label}/2`); // Fetch 2 images for each label
           const imageUrls = response.data.images;
-  
+
           for (const imgUrl of imageUrls) {
             const img = await faceapi.fetchImage(imgUrl);
             const detections = await faceapi
@@ -93,40 +103,46 @@ function Webcam() {
               .withFaceLandmarks()
               .withFaceDescriptor();
             descriptions.push(detections.descriptor);
+            console.log(imgUrl)
           }
         } catch (error) {
           console.error(error);
         }
       })
     );
-  
+
     // Create labeled face descriptors
     const labeledFaceDescriptors = [];
     let currentIndex = 0;
-  
-    labels.forEach((label) => {
+
+    fetchedLabels.forEach((label) => {
       const numImages = 2; // Number of images for each label
-      const descriptors = descriptions.slice(currentIndex, currentIndex + numImages);
+      const descriptors = descriptions.slice(
+        currentIndex,
+        currentIndex + numImages
+      );
       currentIndex += numImages;
-      labeledFaceDescriptors.push(new faceapi.LabeledFaceDescriptors(label, descriptors));
+      labeledFaceDescriptors.push(
+        new faceapi.LabeledFaceDescriptors(label, descriptors)
+      );
     });
-  
+
+    setLabels(fetchedLabels); // Update state with student names
+
     return labeledFaceDescriptors;
   }
 
   return (
     <div style={{ position: 'relative' }}>
-  <video ref={videoRef} width="600" height="450" autoPlay />
-  <canvas 
-    ref={canvasRef}
-    width="600"
-    height="450"
-    style={{ position: 'absolute', top: 0, left: 0 }}
-  />
-</div>
-
+      <video ref={videoRef} width="600" height="450" autoPlay />
+      <canvas
+        ref={canvasRef}
+        width="600"
+        height="450"
+        style={{ position: 'absolute', top: 0, left: 0 }}
+      />
+    </div>
   );
 }
 
 export default Webcam;
- 
