@@ -15,6 +15,7 @@ import AttendancePage from './components/AttendancePage'; // Import the Attendan
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [studentName, setStudentName] = useState('');
+  const [studentRollId, setStudentRollId] = useState('');
 
   return (
     <>
@@ -30,9 +31,9 @@ function App() {
 
       <Navbar isLoggedIn={isLoggedIn} studentName={studentName} />
       {isLoggedIn ? (
-        <AttendancePage /> // Display the AttendancePage component when logged in
+        <AttendancePage studentRollId={studentRollId} />
       ) : (
-        <Login setStudentName={setStudentName} setIsLoggedIn={setIsLoggedIn} />
+        <Login setStudentName={setStudentName} setIsLoggedIn={setIsLoggedIn} setStudentRollId={setStudentRollId} />
       )}
     </>
   );

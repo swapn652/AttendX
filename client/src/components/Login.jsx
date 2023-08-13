@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-export const Login = ({ setStudentName, setIsLoggedIn }) => {
+export const Login = ({ setStudentName, setIsLoggedIn, setStudentRollId }) => {
     const [rollId, setRollId] = useState('');
     const [password, setPassword] = useState('');
   
@@ -20,6 +20,7 @@ export const Login = ({ setStudentName, setIsLoggedIn }) => {
   
         setStudentName(studentName); // Set the student's name
         setIsLoggedIn(true); // Set login state
+        setStudentRollId(studentRollId); //Set the rollId
   
       } catch (error) {
         console.error(error);

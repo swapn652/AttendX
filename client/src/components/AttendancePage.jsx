@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const AttendancePage = () => {
-  // Mock attendance data for demonstration
-  const attendanceData = [
-    { date: '2023-08-15', status: 'Present' },
-    { date: '2023-08-16', status: 'Absent' },
-    { date: '2023-08-17', status: 'Present' },
-    // Add more data as needed
+const AttendancePage = ({ studentRollId }) => {
+  const [attendanceData, setAttendanceData] = useState([]);
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
   ];
+
+  useEffect(() => {
+    const fetchAttendanceData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/getAttendance/${studentRollId}`);
+        setAttendanceData(response.data.attendance);
+      } catch (error) {
+        console.error(error);
+        // Handle error
+      }
+    };  
+    console.log(studentRollId)
+
+    fetchAttendanceData();
+  }, [studentRollId]);
 
   return (
     <div className='flex flex-col justify-center items-center mt-20'>
