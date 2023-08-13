@@ -64,6 +64,7 @@ function Webcam() {
             const result = faceMatcher.findBestMatch(detection.descriptor);
             const box = detection.detection.box;
 
+          
             const drawBox = new faceapi.draw.DrawBox(
               {
                 x: box.x,
@@ -76,6 +77,10 @@ function Webcam() {
               }
             );
             drawBox.draw(canvas);
+
+            // Update the canvas position based on the detected face
+            canvas.style.top = `${box.y}px`;
+            canvas.style.left = `${box.x}px`;
 
             if (result.label !== 'unknown') {
               try {
@@ -156,7 +161,7 @@ function Webcam() {
   }
 
   return (
-    <div style={{ position: 'relative' }} className='flex justify-center mt-20'>
+    <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
       <video ref={videoRef} width="600" height="450" autoPlay />
       <canvas
         ref={canvasRef}
@@ -166,6 +171,7 @@ function Webcam() {
       />
     </div>
   );
+  
 }
 
 export default Webcam;
