@@ -142,13 +142,15 @@ router.post('/login', async (req, res) => {
 
 router.post('/uploadImage', async (req, res) => {
   try {
-    const { imageBase64, name } = req.body;
+    const { name, imageName } = req.body;
+    const file = req.files.image; // Use 'req.files.image' to access the uploaded file
 
     // Create a folder in Cloudinary with the student's name
     const folderName = `uploads/${name}`;
     
-    const uploadResponse = await cloudinary.uploader.upload(imageBase64, {
+    const uploadResponse = await cloudinary.uploader.upload(file.tempFilePath, {
       folder: folderName,
+      public_id: imageName // Use only the desired filename without the folder structure
     });
 
     res.status(200).json({ imageUrl: uploadResponse.secure_url });

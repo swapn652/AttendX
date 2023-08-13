@@ -4,8 +4,13 @@ const app = express();
 require('../db/conn');
 const testRoute = require('../route/route');
 const cors = require('cors');
+const fileUpload = require('express-fileupload')
 
-app.use(cors())
+app.use(cors());
+
+app.use(fileUpload({
+    useTempFiles: true
+}))
 
 app.use(express.json());
 
