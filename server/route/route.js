@@ -179,4 +179,15 @@ router.get('/getCloudinaryImages/:label/:count', async (req, res) => {
   }
 });
 
+router.get('/getAllStudentNames', async (req, res) => {
+  try {
+    const students = await Student.find({}, 'name');
+    const studentNames = students.map(student => student.name);
+    res.json({ studentNames });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error fetching student names' });
+  }
+});
+
 module.exports = router
