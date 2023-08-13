@@ -168,7 +168,7 @@ router.get('/getCloudinaryImages/:label/:count', async (req, res) => {
   try {
     for (let i = 1; i <= count; i++) {
       // Fetch image from Cloudinary using the public ID and folder structure
-      const imgUrl = cloudinary.url(`uploads/${label}/${i}.png`);
+      const imgUrl = cloudinary.url(`uploads/${label}/${i}`, { format: 'jpg' }); // Remove version parameter
       images.push(imgUrl);
     }
 
@@ -178,6 +178,8 @@ router.get('/getCloudinaryImages/:label/:count', async (req, res) => {
     res.status(500).json({ error: 'Error fetching images from Cloudinary' });
   }
 });
+
+
 
 router.get('/getAllStudentNames', async (req, res) => {
   try {
