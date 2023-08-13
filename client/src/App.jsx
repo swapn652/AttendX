@@ -11,6 +11,12 @@ import { Footer } from './components/Footer';
 import { Register } from './components/Register';
 import { Login } from './components/Login';
 import AttendancePage from './components/AttendancePage'; // Import the AttendancePage component
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes
+} from 'react-router-dom'
+import { LandingPage } from './components/LandingPage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -18,25 +24,28 @@ function App() {
   const [studentRollId, setStudentRollId] = useState('');
 
   return (
-    <>
-      {/* // <Webcam/> */}
-      {/* <Navbar/> */}
-      {/* <MainSection/>
-      <FeaturesSection/>
-      <TechStackSection/>
-      <Footer/> */}
-
-      {/* <Register/> */}
-      {/* <Login/> */}
-
-      {/* <Navbar isLoggedIn={isLoggedIn} studentName={studentName} />
-      {isLoggedIn ? (
-        <AttendancePage studentRollId={studentRollId} />
-      ) : (
-        <Login setStudentName={setStudentName} setIsLoggedIn={setIsLoggedIn} setStudentRollId={setStudentRollId} />
-      )} */}
-      <Webcam/>
-    </>
+    <Router>
+      <Navbar isLoggedIn={isLoggedIn} studentName={studentName} />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/login"
+          element={
+            isLoggedIn ? (
+              <AttendancePage studentRollId={studentRollId} />
+            ) : (
+              <Login
+                setStudentName={setStudentName}
+                setIsLoggedIn={setIsLoggedIn}
+                setStudentRollId={setStudentRollId}
+              />
+            )
+          }
+        />
+        <Route path="/webcam" element={<Webcam />} />
+      </Routes>
+    </Router>
   );
 }
 

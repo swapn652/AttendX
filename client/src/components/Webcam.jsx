@@ -156,7 +156,7 @@ function Webcam() {
   }
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: 'relative' }} className='flex justify-center mt-20'>
       <video ref={videoRef} width="600" height="450" autoPlay />
       <canvas
         ref={canvasRef}
