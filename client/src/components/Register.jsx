@@ -5,25 +5,54 @@ import { Bugfender } from '@bugfender/sdk';
 export const Register = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [image1, setImage1] = useState(null);
+  const [image2, setImage2] = useState(null);
+
+  const handleImage1Change = (e) => {
+    setImage1(e.target.files[0]);
+  };
+
+  const handleImage2Change = (e) => {
+    setImage2(e.target.files[0]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-        const response = await axios.post('http://localhost:8000/addStudent', {
-            name,
-            password,
-          });
-          
+      const formDataImage1 = new FormData();
+      formDataImage1.append('name', name);
+      formDataImage1.append('image', image1);
+      formDataImage1.append('imageName', '1');
+
+      const formDataImage2 = new FormData();
+      formDataImage2.append('name', name);
+      formDataImage2.append('image', image2);
+      formDataImage2.append('imageName', '2');
+
+      const [uploadResponse1, uploadResponse2] = await Promise.all([
+        axios.post('http://localhost:8000/uploadImage', formDataImage1, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }),
+        axios.post('http://localhost:8000/uploadImage', formDataImage2, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+      ]);
+
+      const response = await axios.post('http://localhost:8000/addStudent', {
+        name,
+        password
+      });
 
       console.log(response.data);
       Bugfender.log(response.data);
-      
-    
     } catch (error) {
       console.error(error);
       Bugfender.log(error);
-      
     }
   };
 
@@ -52,12 +81,12 @@ export const Register = () => {
 
         <div className='flex flex-col mt-4 w-[300px] self-center'>
           <label className='text-white text-lg self-start ml-2'>Upload Image 1</label>
-          <input type='file' accept='image/*' className='border-2 border-white rounded-lg p-2 mt-1' />
+          <input type='file' accept='image/*' className='border-2 border-white rounded-lg p-2 mt-1' onChange={handleImage1Change} />
         </div>
 
         <div className='flex flex-col mt-4 w-[300px] self-center'>
           <label className='text-white text-lg self-start ml-2'>Upload Image 2</label>
-          <input type='file' accept='image/*' className='border-2 border-white rounded-lg p-2 mt-1' />
+          <input type='file' accept='image/*' className='border-2 border-white rounded-lg p-2 mt-1' onChange={handleImage2Change} />
         </div>
 
         <button
