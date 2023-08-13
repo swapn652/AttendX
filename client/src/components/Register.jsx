@@ -81,6 +81,7 @@ export const Register = () => {
             placeholder='Enter a strong password...'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            type='password'
           />
         </div>
 
