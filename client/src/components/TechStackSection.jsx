@@ -35,7 +35,7 @@ export const TechStackSection = () => {
       </div>
     </div>
     <div className='flex flex-col sm:block md:hidden mt-10 gap-y-10'>
-        <img src="/techStack/react.png" alt="" className='h-20 mt-8 h-[80px] w-[250px]' />
+        <img src="/techStack/react.png" alt="" className='mt-8 h-[80px] w-[250px]' />
         <img src="/techStack/tailwind.png" alt="" className='h-[140px] w-[250px]' />
         <img src="/techStack/node.png" alt="" className='h-[140px] w-[250px]' />
         <img src="/techStack/express.png" alt="" className='h-[140px] w-[250px]' />
