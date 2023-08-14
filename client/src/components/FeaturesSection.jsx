@@ -2,9 +2,9 @@ import React from 'react';
 
 export const FeaturesSection = () => {
   return (
-    <div className='bg-blue-900 h-72 w-screen -ml-[32px] xl:-ml-[32px] flex justify-center items-center mt-10'>
-      <div className='flex gap-8 max-w-screen-lg mx-auto'>
-        <div className='bg-white h-60 w-80 p-4 rounded-lg'>
+    <div className='bg-blue-900 h-[700px] md:h-72 w-screen -ml-[32px] xl:-ml-[32px] flex justify-center items-center mt-10'>
+      <div className='flex flex-col sm:flex-row gap-8 max-w-screen-lg mx-aut p-10 '>
+        <div className='bg-white h-60 w-full sm:w-80 p-4 rounded-lg mb-6 sm:mb-0'>
           <h3 className='text-xl font-semibold mb-2'>Use AI Recognition to Mark Attendance</h3>
           <p className='text-gray-700'>
             Simplify attendance tracking with AI-powered face recognition. No more manual
@@ -12,7 +12,7 @@ export const FeaturesSection = () => {
             attendance recording.
           </p>
         </div>
-        <div className='bg-white h-60 w-80 p-4 rounded-lg'>
+        <div className='bg-white h-60 w-full sm:w-80 p-4 rounded-lg'>
           <h3 className='text-xl font-semibold mb-2'>Check Your Attendance Anywhere</h3>
           <p className='text-gray-700'>
             Access your attendance records on the go. AttendX provides you with a secure login
@@ -23,4 +23,4 @@ export const FeaturesSection = () => {
       </div>
     </div>
   );
-}
+};

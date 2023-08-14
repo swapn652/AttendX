@@ -35,12 +35,12 @@ export const TechStackSection = () => {
       </div>
     </div>
     <div className='flex flex-col sm:block md:hidden mt-10 gap-y-10'>
-        <img src="/techStack/react.png" alt="" className='mt-8 h-[80px] w-[250px]' />
-        <img src="/techStack/tailwind.png" alt="" className='h-[140px] w-[250px]' />
-        <img src="/techStack/node.png" alt="" className='h-[140px] w-[250px]' />
-        <img src="/techStack/express.png" alt="" className='h-[140px] w-[250px]' />
-        <img src="/techStack/mongodb.png" alt="" className='h-[140px] w-[250px]' />
-        <div className='h-20 w-60 bg-blue-900 border-2 border-black rounded-lg flex justify-center items-center mt-10'>
+        <img src="/techStack/react.png" alt="" className='ml-6 mt-8 h-[80px] w-[250px]' />
+        <img src="/techStack/tailwind.png" alt="" className='ml-6 h-[140px] w-[250px]' />
+        <img src="/techStack/node.png" alt="" className='ml-10 h-[140px] w-[250px]' />
+        <img src="/techStack/express.png" alt="" className='ml-8 h-[140px] w-[250px]' />
+        <img src="/techStack/mongodb.png" alt="" className='ml-14 h-[120px] w-[200px]' />
+        <div className='h-20 w-60 ml-10 bg-blue-900 border-2 border-black rounded-lg flex justify-center items-center mt-10'>
           <span className='text-white text-2xl'>Face-api.js</span>
         </div>
     </div>
