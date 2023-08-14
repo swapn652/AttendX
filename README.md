@@ -3,6 +3,9 @@ An AI based attendance app that uses **face-api.js** to mark attendance of stude
 
 ### My submission for Hack-R-Play 2.0 organised by ReactPlay.io
 
+### Link to the blog: 
+https://swapn652.hashnode.dev/attendx-an-ai-based-app-that-marks-your-attendance-based-on-face-recognition
+
 ---
 
 # Tech Stack Used
