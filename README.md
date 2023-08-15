@@ -6,6 +6,8 @@ An AI based attendance app that uses **face-api.js** to mark attendance of stude
 ### Link to the blog: 
 https://swapn652.hashnode.dev/attendx-an-ai-based-app-that-marks-your-attendance-based-on-face-recognition
 
+### Link to the working demo:
+https://www.youtube.com/watch?v=EFNkb-wQpqw
 ---
 
 # Tech Stack Used
